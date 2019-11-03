@@ -4,10 +4,10 @@
 ## 1. Create feature branch
 	- make sure you are creating feature branch from develop branch 
 * bash
-		- git status - shows status and current branch
-		- git checkout -b <branchname> - creates new branch from current branch
+** git status - shows status and current branch
+** git checkout -b <branchname> - creates new branch from current branch
 * this [UI](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-and-deleting-branches-within-your-repository)
-This site was built using [GitHub Pages](https://pages.github.com/).
+
 
 ## 2. Commit and push chnages to new feature branch
 	- bash
