@@ -20,7 +20,7 @@
 - **never use for push**		
 
 ## open pull request form feature branch to develop branch
-* [UI][https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request]
+* [UI](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request)
 ## after aprooval merge feature branch to develop branch
 	- resole any confilct if needed
 
