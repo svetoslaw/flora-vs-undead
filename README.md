@@ -1,4 +1,5 @@
 # flora-vs-undead
+# Development process
 ![Alt text](assets/devproc.jpg?raw=true "Title")
 
 ## 1. Create feature branch
