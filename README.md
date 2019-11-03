@@ -7,7 +7,7 @@
 		- git status - shows status and current branch
 		- git checkout -b <branchname> - creates new branch from current branch
 	- UI
-		- this [tst](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-and-deleting-branches-within-your-repository) .
+		- this [tst][1]
 This site was built using [GitHub Pages](https://pages.github.com/).
 
 ## 2. Commit and push chnages to new feature branch
@@ -27,3 +27,9 @@ This site was built using [GitHub Pages](https://pages.github.com/).
 	- resole any confilct if needed
 
 ## on weekly meeting aproove and merge develop branch to master branch
+
+
+
+
+
+[1]: https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-and-deleting-branches-within-your-repository
