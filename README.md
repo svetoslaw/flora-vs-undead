@@ -17,14 +17,14 @@
 	* git push - uploads files to origin repository
 * [UI](https://help.github.com/en/desktop/contributing-to-projects/committing-and-reviewing-changes-to-your-project)
 
-### **never use force for push**		
+#### (never use force for push)
 
-## open pull request form feature branch to develop branch
+## 3. Open pull request form feature branch to develop branch
 * [UI](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request)
-## after aprooval merge feature branch to develop branch
+## 4. After aprooval merge feature branch to develop branch
 	- resole any confilct if needed
 
-## on weekly meeting aproove and merge develop branch to master branch
+## 5. On weekly meeting aproove and merge develop branch to master branch
 
 
 
