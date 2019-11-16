@@ -9,19 +9,27 @@ Game::Game(){
 	renderer = NULL;
 	running = true;
 }
+
 void Game::init()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	window = SDL_CreateWindow("Flora vs. Undead", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+	font = TTF_OpenFont("assets/arial.ttf", GAME_FONT_SIZE);
 
-	textureManager.load("assets/fvu_main_menu.bmp", "mainmenu", renderer);
-	textureManager.load("assets/playbutton.bmp", "playbutton", renderer);
-	Button* play = new Button("playbutton", 400, 100, 100, 570);
+	textureManager.load("assets/fvu_main_menu.bmp", MAIN_MENU_BACKGROUND_ID, renderer);
+
+	textureManager.load("assets/playbutton.bmp", PLAY_BUTTON_ID, renderer);
+	Button* play = new Button(PLAY_BUTTON_ID, 400, 100, 100, 570);
 	buttons.push_back(play);
-	textureManager.load("assets/exitbutton.bmp", "exitbutton", renderer);
-	Button* exit = new Button("exitbutton", 400, 100, 780, 570);
+
+	textureManager.load("assets/exitbutton.bmp", EXIT_BUTTON_ID, renderer);
+	Button* exit = new Button(EXIT_BUTTON_ID, 400, 100, 780, 570);
 	buttons.push_back(exit);
+
+	Label* sunlight = new Label(SUNLIGHT_LABEL_ID, 100, 100, 400, 200, CYAN, SOLID_BLACK, "Sunlight: 0");
+	textureManager.loadFromText(sunlight->getText(), font, sunlight->getTextColor(), SUNLIGHT_LABEL_ID, renderer);
+
 }
 
 void Game::render()
@@ -30,9 +38,9 @@ void Game::render()
 
 	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
 
-	textureManager.draw("mainmenu", 0, 0, 1280, 720, renderer);
-	textureManager.draw("playbutton", 100, 570, 400, 100, renderer);
-	textureManager.draw("exitbutton", 780, 570, 400, 100, renderer);
+	textureManager.draw(MAIN_MENU_BACKGROUND_ID, 0, 0, 1280, 720, renderer);
+	textureManager.draw(PLAY_BUTTON_ID, 100, 570, 400, 100, renderer);
+	textureManager.draw(EXIT_BUTTON_ID, 780, 570, 400, 100, renderer);
 
 	SDL_RenderPresent(renderer);
 }
