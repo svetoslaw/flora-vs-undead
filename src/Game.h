@@ -7,6 +7,7 @@
 #include "Button.h"
 #include "Constants.cpp"
 #include <vector>
+#include <string>
 
 class Game
 {
