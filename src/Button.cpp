@@ -3,6 +3,11 @@
 
 Button::Button(SDL_Rect pos) : GameObject(pos) {}
 
+Button::Button(SDL_Rect pos, std::function<void()> func) : GameObject(pos)
+{
+	onClickEvent = func;
+}
+
 void Button::handleEvent(SDL_Event* e)
 {
 	int x, y;
@@ -14,8 +19,14 @@ void Button::handleEvent(SDL_Event* e)
 	{
 		inside = false;
 	}
+
 	if (inside)
 	{
-		std::cout << "User clicked on: " << "!refactor button interaction" << std::endl;
+		onClick();
 	}
+}
+
+void Button::onClick()
+{
+	onClickEvent();
 }

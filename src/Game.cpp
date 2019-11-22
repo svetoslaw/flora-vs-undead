@@ -40,12 +40,16 @@ void Game::initLabels()
 
 void Game::initButtons()
 {
+	std::function<void()> func;
+
 	textureManager.load("assets/playbutton.bmp", PLAY_BUTTON_ID, renderer);
-	Button* playButton = new Button(PLAY_BUTTON_POSITION);
+	func = [](){ std::cout << "play" << std::endl; };
+	Button* playButton = new Button(PLAY_BUTTON_POSITION, func);
 	buttons[PLAY_BUTTON_ID] = playButton;
 
 	textureManager.load("assets/exitbutton.bmp", EXIT_BUTTON_ID, renderer);
-	Button* exitButton = new Button(EXIT_BUTTON_POSITION);
+	func = [this]() { std::cout << "exit" << std::endl; running = false; };
+	Button* exitButton = new Button(EXIT_BUTTON_POSITION, func);
 	buttons[EXIT_BUTTON_ID] = exitButton;
 }
 

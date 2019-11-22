@@ -7,6 +7,7 @@
 #include "Button.h"
 #include "Player.h"
 #include "Constants.cpp"
+#include <functional>
 #include <vector>
 #include <string>
 
