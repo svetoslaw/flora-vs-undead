@@ -10,3 +10,5 @@ static const std::string SUNLIGHT_LABEL_ID = "sunlightlabel";
 
 static const SDL_Color SOLID_BLACK = { 0, 0, 0, 255 };
 static const SDL_Color CYAN = { 0, 255, 255, 255 };
+
+static const int UPDATE_INTERVAL_MILLIS = 1000;

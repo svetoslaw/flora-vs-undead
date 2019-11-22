@@ -13,9 +13,12 @@ Game::Game(){
 void Game::init()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
-	TTF_Init();
+	lastTime = SDL_GetTicks();
+
 	window = SDL_CreateWindow("Flora vs. Undead", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight, SDL_WINDOW_SHOWN);
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
+	TTF_Init();
 	font = TTF_OpenFont("assets/arial.ttf", GAME_FONT_SIZE);
 
 	textureManager.load("assets/fvu_main_menu.bmp", MAIN_MENU_BACKGROUND_ID, renderer);
@@ -28,10 +31,11 @@ void Game::init()
 	Button* exit = new Button(EXIT_BUTTON_ID, 400, 100, 780, 570);
 	buttons.push_back(exit);
 
-	
-	Label* sunlight = new Label(SUNLIGHT_LABEL_ID, 100, 100, 100, 50, CYAN, SOLID_BLACK, "Sunlight: 0");
-	textureManager.loadFromText(sunlight->getText(), font, sunlight->getTextColor(), sunlight->getBackgroundColor(),
-		SUNLIGHT_LABEL_ID, renderer);
+	player.createPlayer("Gosho", 5, 10);
+
+	Label* sunlight = new Label(SUNLIGHT_LABEL_ID, 100, 100, 100, 50, SOLID_BLACK, "Sunlight: " + std::to_string(player.getSunlight()));
+	labels[SUNLIGHT_LABEL_ID] = sunlight;
+	textureManager.loadFromText(sunlight->getText(), font, sunlight->getTextColor(), SUNLIGHT_LABEL_ID, renderer);
 
 }
 
@@ -53,6 +57,17 @@ void Game::render()
 void Game::update()
 {
 	//currentFrame = int((SDL_GetTicks() / 100) % 6);
+
+	int currentTime = SDL_GetTicks();
+	if (currentTime - lastTime > UPDATE_INTERVAL_MILLIS)
+	{
+		player.updateSunlight(5);
+		std::cout << player.getSunlight() << std::endl;
+		labels[SUNLIGHT_LABEL_ID]->setText("Sunlight: " + std::to_string(player.getSunlight()));
+		lastTime = currentTime;
+
+		textureManager.loadFromText(labels[SUNLIGHT_LABEL_ID]->getText(), font, SOLID_BLACK, SUNLIGHT_LABEL_ID, renderer);
+	}
 }
 
 void Game::handleEvents()

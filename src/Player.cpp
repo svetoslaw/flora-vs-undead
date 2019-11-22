@@ -1,5 +1,13 @@
 #include "Player.h"
 
+void Player::createPlayer(std::string n, int s, int h)
+{
+	name = n;
+	sunlight = s;
+	health = h;
+}
+
+
 void Player::setName(std::string n) {
 	name = n;
 }

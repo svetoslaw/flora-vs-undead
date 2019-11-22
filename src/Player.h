@@ -5,10 +5,12 @@
 class Player {
 public:
 	Player() {}
+	void createPlayer(std::string name, int sunlight, int health);
 	void setName(std::string n);
 	std::string getName();
 	void setSunlight(int s);
-	void updateSunlight(int us); //increasing over time or manual decrease after purchase.
+	//increasing over time or manual decrease after purchase.
+	void updateSunlight(int us);
 	int getSunlight();
 	void setHealth(int h);
 	int getHealth();

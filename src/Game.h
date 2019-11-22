@@ -5,6 +5,7 @@
 #include "TextureManager.h"
 #include "Label.h"
 #include "Button.h"
+#include "Player.h"
 #include "Constants.cpp"
 #include <vector>
 #include <string>
@@ -25,9 +26,11 @@ private:
 	TTF_Font* font;
 	TextureManager textureManager;
 	int currentFrame;
+	int lastTime;
 	bool running;
 	std::vector <Button*> buttons;
-	std::vector <Label*> labels;
+	std::map <std::string, Label*> labels;
+	Player player;
 };
 
 #endif // !__GAME_H__
