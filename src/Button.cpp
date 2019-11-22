@@ -1,14 +1,7 @@
 #include "Button.h"
 #include <iostream>
 
-Button::Button(std::string id, int width, int height, int x, int y)
-{
-	mPosition.x = x;
-	mPosition.y = y;
-	buttonID = id;
-	buttonWidth = width;
-	buttonHeight = height;
-}
+Button::Button(SDL_Rect pos) : GameObject(pos) {}
 
 void Button::handleEvent(SDL_Event* e)
 {
@@ -17,13 +10,12 @@ void Button::handleEvent(SDL_Event* e)
 
 	bool inside = true;
 
-	if (x < mPosition.x || x > mPosition.x + buttonWidth || y < mPosition.y || y > mPosition.y + buttonHeight)
+	if (x < position.x || x > position.x + position.w || y < position.y || y > position.y + position.h)
 	{
 		inside = false;
-
 	}
 	if (inside)
 	{
-		std::cout << "User clicked on: " << buttonID << std::endl;
+		std::cout << "User clicked on: " << "!refactor button interaction" << std::endl;
 	}
 }

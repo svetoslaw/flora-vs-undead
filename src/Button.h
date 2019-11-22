@@ -1,17 +1,17 @@
 #ifndef __BUTTON_H__
 #define __BUTTON_H__
+
 #include "SDL.h"
+#include "GameObject.h"
 #include <string>
 
-class Button
+class Button : public GameObject
 {
 public:
-	Button(std::string id, int width, int height, int x, int y);
+	Button(SDL_Rect position);
 	void handleEvent(SDL_Event* e);
 private:
-	SDL_Point mPosition;
-	std::string buttonID;
-	int buttonWidth, buttonHeight;
+	
 };
 
 #endif // !__BUTTON_H__

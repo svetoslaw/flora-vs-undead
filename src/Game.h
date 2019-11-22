@@ -20,6 +20,7 @@ public:
 	void handleEvents();
 	void clean();
 	bool isrunning() { return running; }
+
 private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
@@ -28,9 +29,12 @@ private:
 	int currentFrame;
 	int lastTime;
 	bool running;
-	std::vector <Button*> buttons;
+	std::map <std::string, Button*> buttons;
 	std::map <std::string, Label*> labels;
 	Player player;
+
+	void initLabels();
+	void initButtons();
 };
 
 #endif // !__GAME_H__
