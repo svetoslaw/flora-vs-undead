@@ -20,8 +20,11 @@ void Game::init()
 	font = TTF_OpenFont("assets/arial.ttf", GAME_FONT_SIZE);
 
 	textureManager.load("assets/fvu_main_menu.bmp", MAIN_MENU_BACKGROUND_ID, renderer);
+	textureManager.load("assets/play_background.bmp", PLAY_BACKGROUND_ID, renderer);
+	textureManager.load("assets/pause_background.bmp", PAUSE_BACKGROUND_ID, renderer);
+	textureManager.load("assets/sunlight.bmp", SUNLIGHT_ID, renderer);
 
-	player.createPlayer(PLAYER_NAME, 0, 10);
+	player.createPlayer(PLAYER_NAME, 10, 10);
 
 	state.setState("main menu");
 
@@ -32,7 +35,7 @@ void Game::init()
 
 void Game::initLabels()
 {
-	Label* sunlightLabel = new Label(SUNLIGHT_LABEL_POSITION, SOLID_BLACK, "Sunlight: " + std::to_string(player.getSunlight()));
+	Label* sunlightLabel = new Label(SUNLIGHT_LABEL_POSITION, YELLOW, std::to_string(player.getSunlight()));
 	labels[SUNLIGHT_LABEL_ID] = sunlightLabel;
 
 	textureManager.loadFromText(SUNLIGHT_LABEL_ID, sunlightLabel->getText(), font, sunlightLabel->getTextColor(), renderer);
@@ -80,16 +83,21 @@ void Game::drawButtons(std::string s)
 	}
 	else if (s == "play")
 	{
-		textureManager.draw(SUNLIGHT_LABEL_ID, renderer, &labels[SUNLIGHT_LABEL_ID]->getPosition());
+		textureManager.draw(PLAY_BACKGROUND_ID, renderer, &BACKGROUND_POSITION);
 		textureManager.draw(PAUSE_BUTTON_ID, renderer, &buttons[PAUSE_BUTTON_ID]->getPosition());
+		textureManager.draw(SUNLIGHT_ID, renderer, &SUNLIGHT_POSITION);
+		textureManager.draw(SUNLIGHT_LABEL_ID, renderer, &labels[SUNLIGHT_LABEL_ID]->getPosition());
 		buttons[PLAY_BUTTON_ID]->setButtonState("inactive");
 		buttons[EXIT_BUTTON_ID]->setButtonState("inactive");
 		buttons[PAUSE_BUTTON_ID]->setButtonState("active");
 		buttons[RESUME_BUTTON_ID]->setButtonState("inactive");
 		buttons[EXIT_BUTTON_2_ID]->setButtonState("inactive");
+
+
 	}
 	else if (s == "pause")
 	{
+		textureManager.draw(PAUSE_BACKGROUND_ID, renderer, &BACKGROUND_POSITION);
 		textureManager.draw(RESUME_BUTTON_ID, renderer, &buttons[RESUME_BUTTON_ID]->getPosition());
 		textureManager.draw(EXIT_BUTTON_2_ID, renderer, &buttons[EXIT_BUTTON_2_ID]->getPosition());
 		buttons[PAUSE_BUTTON_ID]->setButtonState("inactive");
@@ -120,10 +128,10 @@ void Game::update()
 		{
 			player.updateSunlight(5);
 			std::cout << player.getSunlight() << std::endl;
-			labels[SUNLIGHT_LABEL_ID]->setText("Sunlight: " + std::to_string(player.getSunlight()));
+			labels[SUNLIGHT_LABEL_ID]->setText(std::to_string(player.getSunlight()));
 			lastTime = currentTime;
 
-			textureManager.loadFromText(SUNLIGHT_LABEL_ID, labels[SUNLIGHT_LABEL_ID]->getText(), font, SOLID_BLACK, renderer);
+			textureManager.loadFromText(SUNLIGHT_LABEL_ID, labels[SUNLIGHT_LABEL_ID]->getText(), font, YELLOW, renderer);
 		}
 	}
 }
