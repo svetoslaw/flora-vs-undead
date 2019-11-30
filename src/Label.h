@@ -2,19 +2,18 @@
 #define __LABEL_H__
 
 #include "SDL.h"
-#include "TextureManager.h"
+#include "GameObject.h"
 #include <string>
 
-class Label
+class Label : public GameObject
 {
 public:
-	Label(std::string id, int x_position, int y_position, int width, int heigth, SDL_Color text_color, std::string initial_text);
-	void setText(std::string text);
-	SDL_Rect getPosition();
+	Label(SDL_Rect position, SDL_Color text_color, std::string initial_text);
 	SDL_Color getTextColor();
 	std::string getText();
+	void setText(std::string text);
+
 private:
-	SDL_Rect position;
 	SDL_Color textColor;
 	std::string text;
 };

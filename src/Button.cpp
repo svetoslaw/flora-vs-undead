@@ -1,13 +1,11 @@
 #include "Button.h"
 #include <iostream>
 
-Button::Button(std::string id, int width, int height, int x, int y)
+Button::Button(SDL_Rect pos) : GameObject(pos) {}
+
+Button::Button(SDL_Rect pos, std::function<void()> func) : GameObject(pos)
 {
-	mPosition.x = x;
-	mPosition.y = y;
-	buttonID = id;
-	buttonWidth = width;
-	buttonHeight = height;
+	onClickEvent = func;
 }
 
 void Button::handleEvent(SDL_Event* e)
@@ -17,13 +15,18 @@ void Button::handleEvent(SDL_Event* e)
 
 	bool inside = true;
 
-	if (x < mPosition.x || x > mPosition.x + buttonWidth || y < mPosition.y || y > mPosition.y + buttonHeight)
+	if (x < position.x || x > position.x + position.w || y < position.y || y > position.y + position.h)
 	{
 		inside = false;
-
 	}
+
 	if (inside)
 	{
-		std::cout << "User clicked on: " << buttonID << std::endl;
+		onClick();
 	}
+}
+
+void Button::onClick()
+{
+	onClickEvent();
 }

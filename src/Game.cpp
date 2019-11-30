@@ -1,8 +1,7 @@
 #include <iostream>
 #include "Game.h"
 
-const int windowWidth = 1280;
-const int windowHeight = 720;
+
 
 Game::Game(){
 	window = NULL;
@@ -15,7 +14,8 @@ void Game::init()
 	SDL_Init(SDL_INIT_EVERYTHING);
 	lastTime = SDL_GetTicks();
 
-	window = SDL_CreateWindow("Flora vs. Undead", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, windowWidth, windowHeight, SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow(WINDOW_NAME.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
+	
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 
 	TTF_Init();
@@ -23,21 +23,36 @@ void Game::init()
 
 	textureManager.load("assets/fvu_main_menu.bmp", MAIN_MENU_BACKGROUND_ID, renderer);
 
+	player.createPlayer(PLAYER_NAME, 0, 10);
+
+	initButtons();
+
+	initLabels();
+}
+
+void Game::initLabels()
+{
+	Label* sunlightLabel = new Label(SUNLIGHT_LABEL_POSITION, SOLID_BLACK, "Sunlight: " + std::to_string(player.getSunlight()));
+	labels[SUNLIGHT_LABEL_ID] = sunlightLabel;
+
+	textureManager.loadFromText(SUNLIGHT_LABEL_ID, sunlightLabel->getText(), font, sunlightLabel->getTextColor(), renderer);
+}
+
+void Game::initButtons()
+{
+	std::function<void()> func;
+
 	textureManager.load("assets/playbutton.bmp", PLAY_BUTTON_ID, renderer);
-	Button* play = new Button(PLAY_BUTTON_ID, 400, 100, 100, 570);
-	buttons.push_back(play);
+	func = [](){ std::cout << "play" << std::endl; };
+	Button* playButton = new Button(PLAY_BUTTON_POSITION, func);
+	buttons[PLAY_BUTTON_ID] = playButton;
 
 	textureManager.load("assets/exitbutton.bmp", EXIT_BUTTON_ID, renderer);
-	Button* exit = new Button(EXIT_BUTTON_ID, 400, 100, 780, 570);
-	buttons.push_back(exit);
-
-	player.createPlayer("Gosho", 5, 10);
-
-	Label* sunlight = new Label(SUNLIGHT_LABEL_ID, 100, 100, 100, 50, SOLID_BLACK, "Sunlight: " + std::to_string(player.getSunlight()));
-	labels[SUNLIGHT_LABEL_ID] = sunlight;
-	textureManager.loadFromText(sunlight->getText(), font, sunlight->getTextColor(), SUNLIGHT_LABEL_ID, renderer);
-
+	func = [this]() { std::cout << "exit" << std::endl; running = false; };
+	Button* exitButton = new Button(EXIT_BUTTON_POSITION, func);
+	buttons[EXIT_BUTTON_ID] = exitButton;
 }
+
 
 void Game::render()
 {
@@ -45,11 +60,10 @@ void Game::render()
 
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-	textureManager.draw(MAIN_MENU_BACKGROUND_ID, 0, 0, 1280, 720, renderer);
-	textureManager.draw(PLAY_BUTTON_ID, 100, 570, 400, 100, renderer);
-	textureManager.draw(EXIT_BUTTON_ID, 780, 570, 400, 100, renderer);
-
-	textureManager.draw(SUNLIGHT_LABEL_ID, 100, 100, 100, 50, renderer);
+	textureManager.draw(MAIN_MENU_BACKGROUND_ID, renderer, &BACKGROUND_POSITION);
+	textureManager.draw(PLAY_BUTTON_ID, renderer, &buttons[PLAY_BUTTON_ID]->getPosition());
+	textureManager.draw(EXIT_BUTTON_ID, renderer, &buttons[EXIT_BUTTON_ID]->getPosition());
+	textureManager.draw(SUNLIGHT_LABEL_ID, renderer, &labels[SUNLIGHT_LABEL_ID]->getPosition());
 
 	SDL_RenderPresent(renderer);
 }
@@ -66,7 +80,7 @@ void Game::update()
 		labels[SUNLIGHT_LABEL_ID]->setText("Sunlight: " + std::to_string(player.getSunlight()));
 		lastTime = currentTime;
 
-		textureManager.loadFromText(labels[SUNLIGHT_LABEL_ID]->getText(), font, SOLID_BLACK, SUNLIGHT_LABEL_ID, renderer);
+		textureManager.loadFromText(SUNLIGHT_LABEL_ID, labels[SUNLIGHT_LABEL_ID]->getText(), font, SOLID_BLACK, renderer);
 	}
 }
 
@@ -83,9 +97,9 @@ void Game::handleEvents()
 				break;
 			case SDL_MOUSEBUTTONDOWN:
 			{
-				for (int i = 0; i < buttons.size(); ++i)
+				for(auto const& but : buttons)
 				{
-					buttons.at(i)->handleEvent(&event);
+					but.second->handleEvent(&event);
 				}
 				break;
 			}
