@@ -1,9 +1,14 @@
 #ifndef __GAME_H__
 #define __GAME_H__
 #include "SDL.h"
+#include "SDL_ttf.h"
 #include "TextureManager.h"
+#include "Label.h"
 #include "Button.h"
+#include "Player.h"
+#include "Constants.cpp"
 #include <vector>
+#include <string>
 
 class Game
 {
@@ -18,10 +23,14 @@ public:
 private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
+	TTF_Font* font;
 	TextureManager textureManager;
 	int currentFrame;
+	int lastTime;
 	bool running;
 	std::vector <Button*> buttons;
+	std::map <std::string, Label*> labels;
+	Player player;
 };
 
 #endif // !__GAME_H__

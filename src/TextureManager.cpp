@@ -11,6 +11,20 @@ void TextureManager::load(std::string fileName, std::string id, SDL_Renderer* pR
 	m_textureMap[id] = pTexture;
 }
 
+void TextureManager::loadFromText(std::string text_to_render, TTF_Font* font, SDL_Color text_color, std::string id, SDL_Renderer* pRenderer)
+{
+	SDL_Surface* textSurface = TTF_RenderText_Blended(font, text_to_render.c_str(), text_color);
+	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(pRenderer, textSurface);
+
+	SDL_FreeSurface(textSurface);
+	if (m_textureMap[id] != NULL)
+	{
+		SDL_DestroyTexture(m_textureMap[id]);
+		m_textureMap.erase(id);
+	}
+	m_textureMap[id] = textTexture;
+}
+
 void TextureManager::draw(std::string id, int x, int y, int width, int height, SDL_Renderer* pRenderer)
 {
 	SDL_Rect srcRect;
