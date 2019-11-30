@@ -1,8 +1,6 @@
 #include <iostream>
 #include "Game.h"
 
-
-
 Game::Game(){
 	window = NULL;
 	renderer = NULL;
@@ -25,9 +23,11 @@ void Game::init()
 
 	player.createPlayer(PLAYER_NAME, 0, 10);
 
-	initButtons();
+	state.setState("main menu");
 
 	initLabels();
+
+	initButtons();
 }
 
 void Game::initLabels()
@@ -43,16 +43,60 @@ void Game::initButtons()
 	std::function<void()> func;
 
 	textureManager.load("assets/playbutton.bmp", PLAY_BUTTON_ID, renderer);
-	func = [](){ std::cout << "play" << std::endl; };
-	Button* playButton = new Button(PLAY_BUTTON_POSITION, func);
+	func = [this]() { std::cout << "play" << std::endl; state.setState("play"); };
+	Button* playButton = new Button(PLAY_BUTTON_POSITION, func, "inactive");
 	buttons[PLAY_BUTTON_ID] = playButton;
 
 	textureManager.load("assets/exitbutton.bmp", EXIT_BUTTON_ID, renderer);
 	func = [this]() { std::cout << "exit" << std::endl; running = false; };
-	Button* exitButton = new Button(EXIT_BUTTON_POSITION, func);
+	Button* exitButton = new Button(EXIT_BUTTON_POSITION, func, "inactive");
 	buttons[EXIT_BUTTON_ID] = exitButton;
+
+	textureManager.load("assets/pausebutton.bmp", PAUSE_BUTTON_ID, renderer);
+	func = [this]() { std::cout << "pause" << std::endl; state.setState("pause"); };
+	Button* pauseButton = new Button(PAUSE_BUTTON_POSITION, func, "inactive");
+	buttons[PAUSE_BUTTON_ID] = pauseButton;
+
+	textureManager.load("assets/resumebutton.bmp", RESUME_BUTTON_ID, renderer);
+	func = [this]() { std::cout << "resume" << std::endl; state.setState("play"); };
+	Button* resumeButton = new Button(RESUME_BUTTON_POSITION, func, "inactive");
+	buttons[RESUME_BUTTON_ID] = resumeButton;
+
+	textureManager.load("assets/exitbutton2.bmp", EXIT_BUTTON_2_ID, renderer);
+	func = [this]() { std::cout << "exit2" << std::endl; running = false; };
+	Button* exitButton2 = new Button(EXIT_BUTTON_2_POSITION, func, "inactive");
+	buttons[EXIT_BUTTON_2_ID] = exitButton2;
 }
 
+void Game::drawButtons(std::string s)
+{
+	if (s == "main menu")
+	{
+		textureManager.draw(MAIN_MENU_BACKGROUND_ID, renderer, &BACKGROUND_POSITION);
+		textureManager.draw(PLAY_BUTTON_ID, renderer, &buttons[PLAY_BUTTON_ID]->getPosition());
+		textureManager.draw(EXIT_BUTTON_ID, renderer, &buttons[EXIT_BUTTON_ID]->getPosition());
+		buttons[PLAY_BUTTON_ID]->setButtonState("active");
+		buttons[EXIT_BUTTON_ID]->setButtonState("active");
+	}
+	else if (s == "play")
+	{
+		textureManager.draw(SUNLIGHT_LABEL_ID, renderer, &labels[SUNLIGHT_LABEL_ID]->getPosition());
+		textureManager.draw(PAUSE_BUTTON_ID, renderer, &buttons[PAUSE_BUTTON_ID]->getPosition());
+		buttons[PLAY_BUTTON_ID]->setButtonState("inactive");
+		buttons[EXIT_BUTTON_ID]->setButtonState("inactive");
+		buttons[PAUSE_BUTTON_ID]->setButtonState("active");
+		buttons[RESUME_BUTTON_ID]->setButtonState("inactive");
+		buttons[EXIT_BUTTON_2_ID]->setButtonState("inactive");
+	}
+	else if (s == "pause")
+	{
+		textureManager.draw(RESUME_BUTTON_ID, renderer, &buttons[RESUME_BUTTON_ID]->getPosition());
+		textureManager.draw(EXIT_BUTTON_2_ID, renderer, &buttons[EXIT_BUTTON_2_ID]->getPosition());
+		buttons[PAUSE_BUTTON_ID]->setButtonState("inactive");
+		buttons[RESUME_BUTTON_ID]->setButtonState("active");
+		buttons[EXIT_BUTTON_2_ID]->setButtonState("active");
+	}
+}
 
 void Game::render()
 {
@@ -60,10 +104,8 @@ void Game::render()
 
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
-	textureManager.draw(MAIN_MENU_BACKGROUND_ID, renderer, &BACKGROUND_POSITION);
-	textureManager.draw(PLAY_BUTTON_ID, renderer, &buttons[PLAY_BUTTON_ID]->getPosition());
-	textureManager.draw(EXIT_BUTTON_ID, renderer, &buttons[EXIT_BUTTON_ID]->getPosition());
-	textureManager.draw(SUNLIGHT_LABEL_ID, renderer, &labels[SUNLIGHT_LABEL_ID]->getPosition());
+	std::string s = state.getState();
+	drawButtons(s);
 
 	SDL_RenderPresent(renderer);
 }
@@ -71,16 +113,18 @@ void Game::render()
 void Game::update()
 {
 	//currentFrame = int((SDL_GetTicks() / 100) % 6);
-
-	int currentTime = SDL_GetTicks();
-	if (currentTime - lastTime > UPDATE_INTERVAL_MILLIS)
+	if (state.getState() == "play")
 	{
-		player.updateSunlight(5);
-		std::cout << player.getSunlight() << std::endl;
-		labels[SUNLIGHT_LABEL_ID]->setText("Sunlight: " + std::to_string(player.getSunlight()));
-		lastTime = currentTime;
+		int currentTime = SDL_GetTicks();
+		if (currentTime - lastTime > UPDATE_INTERVAL_MILLIS)
+		{
+			player.updateSunlight(5);
+			std::cout << player.getSunlight() << std::endl;
+			labels[SUNLIGHT_LABEL_ID]->setText("Sunlight: " + std::to_string(player.getSunlight()));
+			lastTime = currentTime;
 
-		textureManager.loadFromText(SUNLIGHT_LABEL_ID, labels[SUNLIGHT_LABEL_ID]->getText(), font, SOLID_BLACK, renderer);
+			textureManager.loadFromText(SUNLIGHT_LABEL_ID, labels[SUNLIGHT_LABEL_ID]->getText(), font, SOLID_BLACK, renderer);
+		}
 	}
 }
 

@@ -7,6 +7,7 @@
 #include "Button.h"
 #include "Player.h"
 #include "Constants.cpp"
+#include "State.h"
 #include <functional>
 #include <vector>
 #include <string>
@@ -21,7 +22,9 @@ public:
 	void handleEvents();
 	void clean();
 	bool isrunning() { return running; }
-
+	void initLabels();
+	void initButtons();
+	void drawButtons(std::string s);
 private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
@@ -33,9 +36,7 @@ private:
 	std::map <std::string, Button*> buttons;
 	std::map <std::string, Label*> labels;
 	Player player;
-
-	void initLabels();
-	void initButtons();
+	State state;
 };
 
 #endif // !__GAME_H__
