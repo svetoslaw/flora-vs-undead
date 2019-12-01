@@ -4,13 +4,17 @@ Cell::Cell(SDL_Rect pos) : GameObject(pos){}
 
 void Cell::setType(int t)
 {
-	if (t == 1)
+	if (t == 0)
 	{
 		type = "one";
 	}
-	else if (t == 2)
+	else if (t == 1)
 	{
 		type = "two";
+	}
+	else
+	{
+		type = "inventory";
 	}
 }
 
@@ -25,8 +29,12 @@ void Cell::drawCell(TextureManager textureManager, SDL_Renderer* renderer)
 	{
 		textureManager.draw("grass1", renderer, &position);
 	}
-	else
+	else if (type == "two")
 	{
 		textureManager.draw("grass2", renderer, &position);
+	}
+	else if (type == "inventory")
+	{
+		textureManager.draw("inventory", renderer, &position);
 	}
 }

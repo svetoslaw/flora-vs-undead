@@ -25,6 +25,8 @@ void Game::init()
 	textureManager.load("assets/sunlight.bmp", SUNLIGHT_ID, renderer);
 	textureManager.load("assets/grass1.bmp", GRASS_1_ID, renderer);
 	textureManager.load("assets/grass2.bmp", GRASS_2_ID, renderer);
+	textureManager.load("assets/inventory.bmp", INVENTORY_ID, renderer);
+	textureManager.load("assets/peashooter.bmp", PEA_SHOOTER_ID, renderer);
 
 	player.createPlayer(PLAYER_NAME, 10, 10);
 
@@ -73,13 +75,14 @@ void Game::initButtons()
 	buttons[EXIT_BUTTON_2_ID] = exitButton2;
 }
 
-void Game::drawButtons(std::string s)
+void Game::drawHUD(std::string s)
 {
 	if (s == "main menu")
 	{
 		textureManager.draw(MAIN_MENU_BACKGROUND_ID, renderer, &BACKGROUND_POSITION);
 		textureManager.draw(PLAY_BUTTON_ID, renderer, &buttons[PLAY_BUTTON_ID]->getPosition());
 		textureManager.draw(EXIT_BUTTON_ID, renderer, &buttons[EXIT_BUTTON_ID]->getPosition());
+		
 		buttons[PLAY_BUTTON_ID]->setButtonState("active");
 		buttons[EXIT_BUTTON_ID]->setButtonState("active");
 	}
@@ -90,6 +93,8 @@ void Game::drawButtons(std::string s)
 		textureManager.draw(SUNLIGHT_ID, renderer, &SUNLIGHT_POSITION);
 		textureManager.draw(SUNLIGHT_LABEL_ID, renderer, &labels[SUNLIGHT_LABEL_ID]->getPosition());
 		grid.drawGrid(textureManager, renderer);
+		inventory.drawInventory(player.getSunlight(), textureManager, renderer);
+
 		buttons[PLAY_BUTTON_ID]->setButtonState("inactive");
 		buttons[EXIT_BUTTON_ID]->setButtonState("inactive");
 		buttons[PAUSE_BUTTON_ID]->setButtonState("active");
@@ -102,6 +107,7 @@ void Game::drawButtons(std::string s)
 		textureManager.draw(PAUSE_BACKGROUND_ID, renderer, &BACKGROUND_POSITION);
 		textureManager.draw(RESUME_BUTTON_ID, renderer, &buttons[RESUME_BUTTON_ID]->getPosition());
 		textureManager.draw(EXIT_BUTTON_2_ID, renderer, &buttons[EXIT_BUTTON_2_ID]->getPosition());
+		
 		buttons[PAUSE_BUTTON_ID]->setButtonState("inactive");
 		buttons[RESUME_BUTTON_ID]->setButtonState("active");
 		buttons[EXIT_BUTTON_2_ID]->setButtonState("active");
@@ -115,7 +121,7 @@ void Game::render()
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
 	std::string s = state.getState();
-	drawButtons(s);
+	drawHUD(s);
 
 	SDL_RenderPresent(renderer);
 }

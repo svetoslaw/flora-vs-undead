@@ -9,6 +9,7 @@
 #include "Constants.cpp"
 #include "State.h"
 #include "Grid.h"
+#include "Inventory.h"
 #include <functional>
 #include <vector>
 #include <string>
@@ -25,7 +26,7 @@ public:
 	bool isrunning() { return running; }
 	void initLabels();
 	void initButtons();
-	void drawButtons(std::string s);
+	void drawHUD(std::string s);
 private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
@@ -39,6 +40,7 @@ private:
 	Player player;
 	State state;
 	Grid grid;
+	Inventory inventory;
 };
 
 #endif // !__GAME_H__
