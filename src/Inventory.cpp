@@ -1,4 +1,5 @@
 #include "Inventory.h"
+#include <iostream>
 
 Inventory::Inventory()
 {
@@ -19,10 +20,20 @@ void Inventory::setInventory()
 	}
 }
 
+void Inventory::updateInventory(int sun, TextureManager textureManager, SDL_Renderer* renderer)
+{
+	if (sun >= 30)
+	{
+		textureManager.draw("peashooter", renderer, &peashooter->getInventoryPosition());
+	}
+}
+
 void Inventory::drawInventory(int sun, TextureManager textureManager, SDL_Renderer* renderer)
 {
 	for (int j = 0; j < cells.size(); j++)
 	{
 		cells.at(j).drawCell(textureManager, renderer);
 	}
+
+	updateInventory(sun, textureManager, renderer);
 }
