@@ -8,6 +8,7 @@ class PeaShooter : public Flower
 public:
 	PeaShooter();
 	SDL_Rect getInventoryPosition();
+	int getPrice();
 private:
 	SDL_Rect position;
 };

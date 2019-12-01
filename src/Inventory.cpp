@@ -22,7 +22,7 @@ void Inventory::setInventory()
 
 void Inventory::updateInventory(int sun, TextureManager textureManager, SDL_Renderer* renderer)
 {
-	if (sun >= 30)
+	if (sun >= peashooter->getPrice())
 	{
 		textureManager.draw("peashooter", renderer, &peashooter->getInventoryPosition());
 	}
