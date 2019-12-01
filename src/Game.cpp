@@ -69,6 +69,11 @@ void Game::initButtons()
 	Button* resumeButton = new Button(RESUME_BUTTON_POSITION, func, "inactive");
 	buttons[RESUME_BUTTON_ID] = resumeButton;
 
+	textureManager.load("assets/restartbutton.bmp", RESTART_BUTTON_ID, renderer);
+	func = [this]() { std::cout << "restart" << std::endl; state.setState("restart"); };
+	Button* restartButton = new Button(RESTART_BUTTON_POSITION, func, "inactive");
+	buttons[RESTART_BUTTON_ID] = restartButton;
+
 	textureManager.load("assets/exitbutton2.bmp", EXIT_BUTTON_2_ID, renderer);
 	func = [this]() { std::cout << "exit2" << std::endl; running = false; };
 	Button* exitButton2 = new Button(EXIT_BUTTON_2_POSITION, func, "inactive");
@@ -89,9 +94,9 @@ void Game::drawHUD(std::string s)
 	else if (s == "play")
 	{
 		textureManager.draw(PLAY_BACKGROUND_ID, renderer, &BACKGROUND_POSITION);
-		textureManager.draw(PAUSE_BUTTON_ID, renderer, &buttons[PAUSE_BUTTON_ID]->getPosition());
 		textureManager.draw(SUNLIGHT_ID, renderer, &SUNLIGHT_POSITION);
 		textureManager.draw(SUNLIGHT_LABEL_ID, renderer, &labels[SUNLIGHT_LABEL_ID]->getPosition());
+		textureManager.draw(PAUSE_BUTTON_ID, renderer, &buttons[PAUSE_BUTTON_ID]->getPosition());
 		grid.drawGrid(textureManager, renderer);
 		inventory.drawInventory(player.getSunlight(), textureManager, renderer);
 
@@ -99,6 +104,7 @@ void Game::drawHUD(std::string s)
 		buttons[EXIT_BUTTON_ID]->setButtonState("inactive");
 		buttons[PAUSE_BUTTON_ID]->setButtonState("active");
 		buttons[RESUME_BUTTON_ID]->setButtonState("inactive");
+		buttons[RESTART_BUTTON_ID]->setButtonState("inactive");
 		buttons[EXIT_BUTTON_2_ID]->setButtonState("inactive");
 		
 	}
@@ -106,11 +112,21 @@ void Game::drawHUD(std::string s)
 	{
 		textureManager.draw(PAUSE_BACKGROUND_ID, renderer, &BACKGROUND_POSITION);
 		textureManager.draw(RESUME_BUTTON_ID, renderer, &buttons[RESUME_BUTTON_ID]->getPosition());
+		textureManager.draw(RESTART_BUTTON_ID, renderer, &buttons[RESTART_BUTTON_ID]->getPosition());
 		textureManager.draw(EXIT_BUTTON_2_ID, renderer, &buttons[EXIT_BUTTON_2_ID]->getPosition());
 		
 		buttons[PAUSE_BUTTON_ID]->setButtonState("inactive");
 		buttons[RESUME_BUTTON_ID]->setButtonState("active");
+		buttons[RESTART_BUTTON_ID]->setButtonState("active");
 		buttons[EXIT_BUTTON_2_ID]->setButtonState("active");
+	}
+	else if (s == "restart")
+	{
+		player.setSunlight(5);
+
+		//Function to clear the grid
+
+		state.setState("play");
 	}
 }
 
@@ -128,7 +144,6 @@ void Game::render()
 
 void Game::update()
 {
-	//currentFrame = int((SDL_GetTicks() / 100) % 6);
 	if (state.getState() == "play")
 	{
 		int currentTime = SDL_GetTicks();
