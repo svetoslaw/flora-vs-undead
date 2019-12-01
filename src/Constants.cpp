@@ -8,6 +8,8 @@ static const int WINDOW_HEIGHT = 720;
 static const int GAME_FONT_SIZE = 300;
 
 static const std::string PLAYER_NAME = "Gosho";
+static const std::string GRASS_1_ID = "grass1";
+static const std::string GRASS_2_ID = "grass2";
 
 static const std::string MAIN_MENU_BACKGROUND_ID = "mainmenu";
 static const SDL_Rect BACKGROUND_POSITION = { 0, 0, 1280, 720 };

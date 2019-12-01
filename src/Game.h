@@ -8,6 +8,7 @@
 #include "Player.h"
 #include "Constants.cpp"
 #include "State.h"
+#include "Grid.h"
 #include <functional>
 #include <vector>
 #include <string>
@@ -37,6 +38,7 @@ private:
 	std::map <std::string, Label*> labels;
 	Player player;
 	State state;
+	Grid grid;
 };
 
 #endif // !__GAME_H__

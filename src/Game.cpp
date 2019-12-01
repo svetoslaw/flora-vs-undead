@@ -23,6 +23,8 @@ void Game::init()
 	textureManager.load("assets/play_background.bmp", PLAY_BACKGROUND_ID, renderer);
 	textureManager.load("assets/pause_background.bmp", PAUSE_BACKGROUND_ID, renderer);
 	textureManager.load("assets/sunlight.bmp", SUNLIGHT_ID, renderer);
+	textureManager.load("assets/grass1.bmp", GRASS_1_ID, renderer);
+	textureManager.load("assets/grass2.bmp", GRASS_2_ID, renderer);
 
 	player.createPlayer(PLAYER_NAME, 10, 10);
 
@@ -87,13 +89,13 @@ void Game::drawButtons(std::string s)
 		textureManager.draw(PAUSE_BUTTON_ID, renderer, &buttons[PAUSE_BUTTON_ID]->getPosition());
 		textureManager.draw(SUNLIGHT_ID, renderer, &SUNLIGHT_POSITION);
 		textureManager.draw(SUNLIGHT_LABEL_ID, renderer, &labels[SUNLIGHT_LABEL_ID]->getPosition());
+		grid.drawGrid(textureManager, renderer);
 		buttons[PLAY_BUTTON_ID]->setButtonState("inactive");
 		buttons[EXIT_BUTTON_ID]->setButtonState("inactive");
 		buttons[PAUSE_BUTTON_ID]->setButtonState("active");
 		buttons[RESUME_BUTTON_ID]->setButtonState("inactive");
 		buttons[EXIT_BUTTON_2_ID]->setButtonState("inactive");
-
-
+		
 	}
 	else if (s == "pause")
 	{
