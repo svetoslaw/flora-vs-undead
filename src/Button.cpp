@@ -3,9 +3,10 @@
 
 Button::Button(SDL_Rect pos) : GameObject(pos) {}
 
-Button::Button(SDL_Rect pos, std::function<void()> func) : GameObject(pos)
+Button::Button(SDL_Rect pos, std::function<void()> func, std::string st) : GameObject(pos)
 {
 	onClickEvent = func;
+	state = st;
 }
 
 void Button::handleEvent(SDL_Event* e)
@@ -20,7 +21,7 @@ void Button::handleEvent(SDL_Event* e)
 		inside = false;
 	}
 
-	if (inside)
+	if (inside && state == "active")
 	{
 		onClick();
 	}
@@ -29,4 +30,14 @@ void Button::handleEvent(SDL_Event* e)
 void Button::onClick()
 {
 	onClickEvent();
+}
+
+void Button::setButtonState(std::string s)
+{
+	state = s;
+}
+
+std::string Button::getButtonState()
+{
+	return state;
 }

@@ -136,19 +136,31 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Button.cpp" />
+    <ClCompile Include="src\Cell.cpp" />
     <ClCompile Include="src\Constants.cpp" />
+    <ClCompile Include="src\Flower.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameObject.cpp" />
+    <ClCompile Include="src\Grid.cpp" />
+    <ClCompile Include="src\Inventory.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\PeaShooter.cpp" />
     <ClCompile Include="src\Player.cpp" />
+    <ClCompile Include="src\State.cpp" />
     <ClCompile Include="src\TextureManager.cpp" />
     <ClCompile Include="src\Label.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Button.h" />
+    <ClInclude Include="src\Cell.h" />
+    <ClInclude Include="src\Flower.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\GameObject.h" />
+    <ClInclude Include="src\Grid.h" />
+    <ClInclude Include="src\Inventory.h" />
+    <ClInclude Include="src\PeaShooter.h" />
     <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\State.h" />
     <ClInclude Include="src\TextureManager.h" />
     <ClInclude Include="src\Label.h" />
   </ItemGroup>

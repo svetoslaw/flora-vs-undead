@@ -7,6 +7,9 @@
 #include "Button.h"
 #include "Player.h"
 #include "Constants.cpp"
+#include "State.h"
+#include "Grid.h"
+#include "Inventory.h"
 #include <functional>
 #include <vector>
 #include <string>
@@ -21,7 +24,9 @@ public:
 	void handleEvents();
 	void clean();
 	bool isrunning() { return running; }
-
+	void initLabels();
+	void initButtons();
+	void drawHUD(std::string s);
 private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
@@ -33,9 +38,9 @@ private:
 	std::map <std::string, Button*> buttons;
 	std::map <std::string, Label*> labels;
 	Player player;
-
-	void initLabels();
-	void initButtons();
+	State state;
+	Grid grid;
+	Inventory inventory;
 };
 
 #endif // !__GAME_H__
