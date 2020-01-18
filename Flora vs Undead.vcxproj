@@ -148,6 +148,7 @@
     <ClCompile Include="src\PeaShooter.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\SnowPea.cpp" />
+    <ClCompile Include="src\Projectile.cpp" />
     <ClCompile Include="src\State.cpp" />
     <ClCompile Include="src\TextureManager.cpp" />
     <ClCompile Include="src\Label.cpp" />

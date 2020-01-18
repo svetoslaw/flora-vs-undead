@@ -35,6 +35,7 @@ void Game::init()
 	textureManager.load("assets/cactus.bmp", CACTUS_ID, renderer);
 	textureManager.load("assets/cactus1.bmp", CACTUS_1_ID, renderer);
 	textureManager.load("assets/cactus2.bmp", CACTUS_2_ID, renderer);
+	textureManager.load(PROJECTILE_SPRITE_FILEPATH, PROJECTILE_ID, renderer);
 
 	player.createPlayer(PLAYER_NAME, 10, 10);
 
@@ -108,6 +109,8 @@ void Game::drawHUD(std::string s)
 		grid.drawGrid(textureManager, renderer);
 		inventory.drawInventory(player.getSunlight(), textureManager, renderer);
 
+		grid.drawProjectiles(textureManager, renderer);
+
 		buttons[PLAY_BUTTON_ID]->setButtonState("inactive");
 		buttons[EXIT_BUTTON_ID]->setButtonState("inactive");
 		buttons[PAUSE_BUTTON_ID]->setButtonState("active");
@@ -159,7 +162,11 @@ void Game::update()
 			labels[SUNLIGHT_LABEL_ID]->setText(std::to_string(player.getSunlight()));
 			lastTime = currentTime;
 			textureManager.loadFromText(SUNLIGHT_LABEL_ID, labels[SUNLIGHT_LABEL_ID]->getText(), font, YELLOW, renderer);
+
+			grid.spawnProjectiles();
 		}
+		grid.moveProjectiles(PROJECTILE_SPEED);
+		grid.destroyProjectiles();
 	}
 }
 

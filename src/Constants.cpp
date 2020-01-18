@@ -1,3 +1,6 @@
+#ifndef CONSTANTS
+#define CONSTANTS
+
 #include "SDL.h"
 #include <string>
 
@@ -58,4 +61,13 @@ static const SDL_Color SOLID_BLACK = { 0, 0, 0, 255 };
 static const SDL_Color YELLOW = { 255, 255, 0, 255 };
 static const SDL_Color CYAN = { 0, 255, 255, 255 };
 
-static const int UPDATE_INTERVAL_MILLIS = 3000;
+static const int UPDATE_INTERVAL_MILLIS = 1000;
+
+static const int SHOOT_INTERVAL_MILLIS = 2000;
+
+static const int PROJECTILE_SPEED = 10;
+static const int PROJECTILE_SIZE = 60;
+static const std::string PROJECTILE_SPRITE_FILEPATH = "assets/pea.bmp";
+static const std::string PROJECTILE_ID = "projectile";
+
+#endif // CONSTANTS
