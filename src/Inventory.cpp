@@ -22,9 +22,17 @@ void Inventory::setInventory()
 
 void Inventory::updateInventory(int sun, TextureManager textureManager, SDL_Renderer* renderer)
 {
-	if (sun >= peashooter->getPrice())
+	if (sun >= peashooter.getPrice())
 	{
-		textureManager.draw("peashooter", renderer, &peashooter->getInventoryPosition());
+		textureManager.draw("peashooter", renderer, &peashooter.getInventoryPosition());
+	}
+	if (sun >= snowpea.getPrice())
+	{
+		textureManager.draw("snowpea", renderer, &snowpea.getInventoryPosition());
+	}
+	if (sun >= cactus.getPrice())
+	{
+		textureManager.draw("cactus", renderer, &cactus.getInventoryPosition());
 	}
 }
 
@@ -36,4 +44,56 @@ void Inventory::drawInventory(int sun, TextureManager textureManager, SDL_Render
 	}
 
 	updateInventory(sun, textureManager, renderer);
+}
+
+void Inventory::handleEvent(SDL_Event* e)
+{
+	int x, y;
+	SDL_GetMouseState(&x, &y);
+
+	bool inside = true;
+	for (int i = 0; i < cells.size(); i++)
+	{
+		if (x < cells.at(i).getPosition().x || x > cells.at(i).getPosition().x + cells.at(i).getPosition().w
+			|| y < cells.at(i).getPosition().y || y > cells.at(i).getPosition().y + cells.at(i).getPosition().h)
+		{
+			inside = false;
+		}
+
+		else
+		{
+			onClick(i);
+		}
+	}
+}
+
+void Inventory::onClick(int s)
+{
+	setSelected(s);
+	
+}
+
+void Inventory::setSelected(int sel)
+{
+	selected = sel;
+}
+
+std::string Inventory::getSelected(Player* player)
+{
+	if (selected == 0 && player->getSunlight() >= peashooter.getPrice())
+	{
+		return "peashooter";
+	}
+	else if (selected == 1 && player->getSunlight() >= snowpea.getPrice())
+	{
+		return "snowpea";
+	}
+	else if (selected == 2 && player->getSunlight() >= cactus.getPrice())
+	{
+		return "cactus";
+	}
+	else
+	{
+		return "none";
+	}
 }

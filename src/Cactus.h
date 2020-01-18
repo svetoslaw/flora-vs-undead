@@ -1,18 +1,18 @@
-#ifndef __PEA_SHOOTER_H__
-#define __PEA_SHOOTER_H__
+#ifndef __CACTUS_H__
+#define __CACTUS_H__
 #pragma once 
 
 #include "SDL.h"
 #include "Flower.h"
 
-class PeaShooter : public Flower
+class Cactus : public Flower
 {
 public:
-	PeaShooter();
+	Cactus();
 	SDL_Rect getInventoryPosition();
 	int getPrice();
 private:
 	SDL_Rect position;
 };
 
-#endif // !__PEA_SHOOTER_H__
+#endif // !__CACTUS_H__

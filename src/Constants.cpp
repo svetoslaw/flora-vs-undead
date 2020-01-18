@@ -12,6 +12,14 @@ static const std::string GRASS_1_ID = "grass1";
 static const std::string GRASS_2_ID = "grass2";
 static const std::string INVENTORY_ID = "inventory";
 static const std::string PEA_SHOOTER_ID = "peashooter";
+static const std::string PEA_SHOOTER_1_ID = "peashooter1";
+static const std::string PEA_SHOOTER_2_ID = "peashooter2";
+static const std::string SNOW_PEA_ID = "snowpea";
+static const std::string SNOW_PEA_1_ID = "snowpea1";
+static const std::string SNOW_PEA_2_ID = "snowpea2";
+static const std::string CACTUS_ID = "cactus";
+static const std::string CACTUS_1_ID = "cactus1";
+static const std::string CACTUS_2_ID = "cactus2";
 
 static const std::string MAIN_MENU_BACKGROUND_ID = "mainmenu";
 static const SDL_Rect BACKGROUND_POSITION = { 0, 0, 1280, 720 };

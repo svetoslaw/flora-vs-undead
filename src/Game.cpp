@@ -27,6 +27,14 @@ void Game::init()
 	textureManager.load("assets/grass2.bmp", GRASS_2_ID, renderer);
 	textureManager.load("assets/inventory.bmp", INVENTORY_ID, renderer);
 	textureManager.load("assets/peashooter.bmp", PEA_SHOOTER_ID, renderer);
+	textureManager.load("assets/peashooter1.bmp", PEA_SHOOTER_1_ID, renderer);
+	textureManager.load("assets/peashooter2.bmp", PEA_SHOOTER_2_ID, renderer);
+	textureManager.load("assets/snowpea.bmp", SNOW_PEA_ID, renderer);
+	textureManager.load("assets/snowpea1.bmp", SNOW_PEA_1_ID, renderer);
+	textureManager.load("assets/snowpea2.bmp", SNOW_PEA_2_ID, renderer);
+	textureManager.load("assets/cactus.bmp", CACTUS_ID, renderer);
+	textureManager.load("assets/cactus1.bmp", CACTUS_1_ID, renderer);
+	textureManager.load("assets/cactus2.bmp", CACTUS_2_ID, renderer);
 
 	player.createPlayer(PLAYER_NAME, 10, 10);
 
@@ -50,32 +58,32 @@ void Game::initButtons()
 	std::function<void()> func;
 
 	textureManager.load("assets/playbutton.bmp", PLAY_BUTTON_ID, renderer);
-	func = [this]() { std::cout << "play" << std::endl; state.setState("play"); };
+	func = [this]() { state.setState("play"); };
 	Button* playButton = new Button(PLAY_BUTTON_POSITION, func, "inactive");
 	buttons[PLAY_BUTTON_ID] = playButton;
 
 	textureManager.load("assets/exitbutton.bmp", EXIT_BUTTON_ID, renderer);
-	func = [this]() { std::cout << "exit" << std::endl; running = false; };
+	func = [this]() { running = false; };
 	Button* exitButton = new Button(EXIT_BUTTON_POSITION, func, "inactive");
 	buttons[EXIT_BUTTON_ID] = exitButton;
 
 	textureManager.load("assets/pausebutton.bmp", PAUSE_BUTTON_ID, renderer);
-	func = [this]() { std::cout << "pause" << std::endl; state.setState("pause"); };
+	func = [this]() { state.setState("pause"); };
 	Button* pauseButton = new Button(PAUSE_BUTTON_POSITION, func, "inactive");
 	buttons[PAUSE_BUTTON_ID] = pauseButton;
 
 	textureManager.load("assets/resumebutton.bmp", RESUME_BUTTON_ID, renderer);
-	func = [this]() { std::cout << "resume" << std::endl; state.setState("play"); };
+	func = [this]() { state.setState("play"); };
 	Button* resumeButton = new Button(RESUME_BUTTON_POSITION, func, "inactive");
 	buttons[RESUME_BUTTON_ID] = resumeButton;
 
 	textureManager.load("assets/restartbutton.bmp", RESTART_BUTTON_ID, renderer);
-	func = [this]() { std::cout << "restart" << std::endl; state.setState("restart"); };
+	func = [this]() { state.setState("restart"); };
 	Button* restartButton = new Button(RESTART_BUTTON_POSITION, func, "inactive");
 	buttons[RESTART_BUTTON_ID] = restartButton;
 
 	textureManager.load("assets/exitbutton2.bmp", EXIT_BUTTON_2_ID, renderer);
-	func = [this]() { std::cout << "exit2" << std::endl; running = false; };
+	func = [this]() { running = false; };
 	Button* exitButton2 = new Button(EXIT_BUTTON_2_POSITION, func, "inactive");
 	buttons[EXIT_BUTTON_2_ID] = exitButton2;
 }
@@ -122,10 +130,8 @@ void Game::drawHUD(std::string s)
 	}
 	else if (s == "restart")
 	{
-		player.setSunlight(5);
-
-		//Function to clear the grid
-
+		player.setSunlight(10);
+		grid.clearGrid();
 		state.setState("play");
 	}
 }
@@ -149,11 +155,9 @@ void Game::update()
 		int currentTime = SDL_GetTicks();
 		if (currentTime - lastTime > UPDATE_INTERVAL_MILLIS)
 		{
-			player.updateSunlight(5);
-			std::cout << player.getSunlight() << std::endl;
+			player.updateSunlight(10);
 			labels[SUNLIGHT_LABEL_ID]->setText(std::to_string(player.getSunlight()));
 			lastTime = currentTime;
-
 			textureManager.loadFromText(SUNLIGHT_LABEL_ID, labels[SUNLIGHT_LABEL_ID]->getText(), font, YELLOW, renderer);
 		}
 	}
@@ -176,6 +180,8 @@ void Game::handleEvents()
 				{
 					but.second->handleEvent(&event);
 				}
+				inventory.handleEvent(&event);
+				grid.handleEvent(&event, inventory.getSelected(&player), &player, textureManager, renderer);
 				break;
 			}
 			default:
