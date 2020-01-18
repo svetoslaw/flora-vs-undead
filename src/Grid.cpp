@@ -138,3 +138,46 @@ void Grid::handleEvent(SDL_Event* e, std::string selected, Player* player, Textu
 		}
 	}
 }
+
+void Grid::spawnProjectiles()
+{
+	for (int i = 0;  i < cells.size();  i++)
+	{
+		std::string cellType = cells.at(i).getType();
+		if (cellType == "peashooter1" || cellType == "peashooter2" || cellType == "snowpea1"
+			|| cellType == "snowpea2" || cellType == "cactus1" || cellType == "cactus2")
+		{
+			SDL_Rect projectileSpawnPosition = { cells.at(i).getPosition().x + 30, cells.at(i).getPosition().y + 30, 60, 60};
+			Projectile projectile(projectileSpawnPosition);
+			projectiles.push_back(projectile);
+		}
+	}
+}
+
+void Grid::drawProjectiles(TextureManager textureManager, SDL_Renderer* renderer)
+{
+	for (int i = 0; i < projectiles.size(); i++)
+	{
+		textureManager.draw(PROJECTILE_ID, renderer, &projectiles.at(i).getPosition());
+	}
+}
+
+void Grid::moveProjectiles(int projectileSpeed)
+{
+	for (int i = 0; i < projectiles.size(); i++)
+	{
+		int newX = projectiles.at(i).getPosition().x + projectileSpeed;
+		projectiles.at(i).setX(newX);
+	}
+}
+
+void Grid::destroyProjectiles()
+{
+	for (int i = 0; i < projectiles.size(); i++)
+	{
+		if (projectiles.at(i).getPosition().x > WINDOW_WIDTH)
+		{
+			projectiles.erase(projectiles.begin() + i);
+		}
+	}
+}

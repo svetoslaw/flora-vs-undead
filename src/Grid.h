@@ -7,6 +7,8 @@
 #include "PeaShooter.h"
 #include "SnowPea.h"
 #include "Cactus.h"
+#include "Projectile.h"
+#include "Constants.cpp"
 #include <vector>
 #include <iostream>
 
@@ -18,7 +20,13 @@ public:
 	void drawGrid(TextureManager textureManager, SDL_Renderer* renderer);
 	void clearGrid();
 	void handleEvent(SDL_Event* e, std::string selected, Player* player, TextureManager textureManager, SDL_Renderer* renderer);
+
+	void spawnProjectiles();
+	void drawProjectiles(TextureManager textureManager, SDL_Renderer* renderer);
+	void moveProjectiles(int projectileSpeed);
+	void destroyProjectiles();
 private:
+	std::vector<Projectile> projectiles;
 	std::vector<Cell> cells;
 	std::vector<Cell> cellsStart;
 	int startX = 40;
