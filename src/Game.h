@@ -33,7 +33,7 @@ private:
 	TTF_Font* font;
 	TextureManager textureManager;
 	int currentFrame;
-	int lastTime;
+	int lastTime, lastTime2;
 	bool running;
 	std::map <std::string, Button*> buttons;
 	std::map <std::string, Label*> labels;

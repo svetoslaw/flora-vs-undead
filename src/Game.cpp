@@ -11,6 +11,7 @@ void Game::init()
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 	lastTime = SDL_GetTicks();
+	lastTime2 = SDL_GetTicks();
 
 	window = SDL_CreateWindow(WINDOW_NAME.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_SHOWN);
 	
@@ -35,7 +36,11 @@ void Game::init()
 	textureManager.load("assets/cactus.bmp", CACTUS_ID, renderer);
 	textureManager.load("assets/cactus1.bmp", CACTUS_1_ID, renderer);
 	textureManager.load("assets/cactus2.bmp", CACTUS_2_ID, renderer);
-	textureManager.load(PROJECTILE_SPRITE_FILEPATH, PROJECTILE_ID, renderer);
+	textureManager.loadAlpha("assets/pea.bmp", PEA_ID, renderer);
+	textureManager.loadAlpha("assets/ice.bmp", ICE_ID, renderer);
+	textureManager.loadAlpha("assets/spike.bmp", SPIKE_ID, renderer);
+	textureManager.loadAlpha("assets/worker.bmp", WORKER_ID, renderer);
+	
 
 	player.createPlayer(PLAYER_NAME, 10, 10);
 
@@ -110,6 +115,8 @@ void Game::drawHUD(std::string s)
 		inventory.drawInventory(player.getSunlight(), textureManager, renderer);
 
 		grid.drawProjectiles(textureManager, renderer);
+		grid.drawZombies(textureManager, renderer);
+		grid.checkCollision();
 
 		buttons[PLAY_BUTTON_ID]->setButtonState("inactive");
 		buttons[EXIT_BUTTON_ID]->setButtonState("inactive");
@@ -130,11 +137,14 @@ void Game::drawHUD(std::string s)
 		buttons[RESUME_BUTTON_ID]->setButtonState("active");
 		buttons[RESTART_BUTTON_ID]->setButtonState("active");
 		buttons[EXIT_BUTTON_2_ID]->setButtonState("active");
+
+		inventory.setSelected(-1);
 	}
 	else if (s == "restart")
 	{
 		player.setSunlight(10);
 		grid.clearGrid();
+		grid.destroyZombies();
 		state.setState("play");
 	}
 }
@@ -162,11 +172,20 @@ void Game::update()
 			labels[SUNLIGHT_LABEL_ID]->setText(std::to_string(player.getSunlight()));
 			lastTime = currentTime;
 			textureManager.loadFromText(SUNLIGHT_LABEL_ID, labels[SUNLIGHT_LABEL_ID]->getText(), font, YELLOW, renderer);
-
+			if (grid.getNumberOfZombies() < 1)
+			{
+				grid.spawnZombies();
+			}
 			grid.spawnProjectiles();
+			grid.moveZombies(ZOMBIE_SPEED);
 		}
+		if (currentTime - lastTime2 > ZOMBIE_INTERVAL_MILLIS && grid.getNumberOfZombies() < 5)
+		{
+			lastTime2 = currentTime;
+			grid.spawnZombies();
+		}
+	
 		grid.moveProjectiles(PROJECTILE_SPEED);
-		grid.destroyProjectiles();
 	}
 }
 

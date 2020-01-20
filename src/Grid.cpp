@@ -3,6 +3,7 @@
 Grid::Grid()
 {
 	setGrid();
+	srand(time(NULL));
 }
 
 void Grid::setGrid()
@@ -68,6 +69,34 @@ void Grid::clearGrid()
 		{
 			cells.at(k).setType(1);
 		}
+	}
+}
+
+void Grid::clearCell(int k)
+{
+	if (cells.at(k).getType() == "peashooter1")
+	{
+		cells.at(k).setType(0);
+	}
+	else if (cells.at(k).getType() == "peashooter2")
+	{
+		cells.at(k).setType(1);
+	}
+	else if (cells.at(k).getType() == "snowpea1")
+	{
+		cells.at(k).setType(0);
+	}
+	else if (cells.at(k).getType() == "snowpea2")
+	{
+		cells.at(k).setType(1);
+	}
+	else if (cells.at(k).getType() == "cactus1")
+	{
+		cells.at(k).setType(0);
+	}
+	else if (cells.at(k).getType() == "cactus2")
+	{
+		cells.at(k).setType(1);
 	}
 }
 
@@ -144,11 +173,24 @@ void Grid::spawnProjectiles()
 	for (int i = 0;  i < cells.size();  i++)
 	{
 		std::string cellType = cells.at(i).getType();
-		if (cellType == "peashooter1" || cellType == "peashooter2" || cellType == "snowpea1"
-			|| cellType == "snowpea2" || cellType == "cactus1" || cellType == "cactus2")
+		SDL_Rect projectileSpawnPosition = { cells.at(i).getPosition().x + 30, cells.at(i).getPosition().y + 30, PROJECTILE_SIZE, PROJECTILE_SIZE };
+
+		if (cellType == "peashooter1" || cellType == "peashooter2")
 		{
-			SDL_Rect projectileSpawnPosition = { cells.at(i).getPosition().x + 30, cells.at(i).getPosition().y + 30, 60, 60};
 			Projectile projectile(projectileSpawnPosition);
+			projectile.setType("pea");
+			projectiles.push_back(projectile);
+		}
+		else if (cellType == "snowpea1" || cellType == "snowpea2")
+		{
+			Projectile projectile(projectileSpawnPosition);
+			projectile.setType("ice");
+			projectiles.push_back(projectile);
+		}
+		else if(cellType == "cactus1" || cellType == "cactus2")
+		{
+			Projectile projectile(projectileSpawnPosition);
+			projectile.setType("spike");
 			projectiles.push_back(projectile);
 		}
 	}
@@ -158,7 +200,7 @@ void Grid::drawProjectiles(TextureManager textureManager, SDL_Renderer* renderer
 {
 	for (int i = 0; i < projectiles.size(); i++)
 	{
-		textureManager.draw(PROJECTILE_ID, renderer, &projectiles.at(i).getPosition());
+		textureManager.draw(projectiles.at(i).getType(), renderer, &projectiles.at(i).getPosition());
 	}
 }
 
@@ -171,13 +213,91 @@ void Grid::moveProjectiles(int projectileSpeed)
 	}
 }
 
-void Grid::destroyProjectiles()
+void Grid::spawnZombies()
 {
-	for (int i = 0; i < projectiles.size(); i++)
+	int pos = rand() % 340 + 20;
+	SDL_Rect projectileSpawnPosition = { cells.at(9).getPosition().x + 50, cells.at(9).getPosition().y + pos, 121, 200 };
+	Zombie zombie(projectileSpawnPosition);
+	zombie.setType("worker");
+	zombies.push_back(zombie);
+	numOfZombies++;
+}
+
+void Grid::drawZombies(TextureManager textureManager, SDL_Renderer* renderer)
+{
+	for (int i = 0; i < zombies.size(); i++)
 	{
-		if (projectiles.at(i).getPosition().x > WINDOW_WIDTH)
+		textureManager.draw(zombies.at(i).getType(), renderer, &zombies.at(i).getPosition());
+	}
+}
+
+void Grid::moveZombies(int zombieSpeed)
+{
+	for (int i = 0; i < zombies.size(); i++)
+	{
+		int newX = zombies.at(i).getPosition().x - zombieSpeed;
+		zombies.at(i).setX(newX);
+	}
+}
+
+void Grid::destroyZombies()
+{
+	zombies.clear();
+	numOfZombies = 0;
+}
+
+void Grid::destroyZombie(int p)
+{
+	zombies.erase(zombies.begin() + p);
+}
+
+int Grid::getNumberOfZombies()
+{
+	return numOfZombies;
+}
+
+void Grid::checkCollision()
+{
+	for (int i = 0; i < cells.size(); i++)
+	{
+		if (cells.at(i).isFull())
 		{
-			projectiles.erase(projectiles.begin() + i);
+			for (int j = 0; j < zombies.size(); j++) 
+			{
+				int distance = sqrt(pow((cells.at(i).getPosition().x - zombies.at(j).getPosition().x), 2) 
+					+ pow((cells.at(i).getPosition().y - zombies.at(j).getPosition().y), 2));
+				if (distance < 100) 
+				{
+					clearCell(i);
+				}
+			}
+		}
+	}
+
+	for (int k = 0; k < projectiles.size(); k++)
+	{
+		for (int t = 0; t < zombies.size(); t++)
+		{
+			int distance2 = sqrt(pow((zombies.at(t).getPosition().x - projectiles.at(k).getPosition().x), 2)
+				+ pow((zombies.at(t).getPosition().y - projectiles.at(k).getPosition().y), 2));
+			if (distance2 < 50)
+			{
+				zombies.at(t).updateHealth(-50);
+				if (zombies.at(t).getHealth() <= 0)
+				{
+					destroyZombie(t);
+				}
+				projectiles.erase(projectiles.begin() + k);
+				break;
+			}
+		}
+	}
+
+	for (int m = 0; m < zombies.size(); m++)
+	{
+		if (zombies.at(m).getPosition().x <= 40)
+		{
+			destroyZombie(m);
 		}
 	}
 }

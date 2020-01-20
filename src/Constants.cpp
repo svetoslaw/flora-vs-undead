@@ -23,6 +23,10 @@ static const std::string SNOW_PEA_2_ID = "snowpea2";
 static const std::string CACTUS_ID = "cactus";
 static const std::string CACTUS_1_ID = "cactus1";
 static const std::string CACTUS_2_ID = "cactus2";
+static const std::string PEA_ID = "pea";
+static const std::string ICE_ID = "ice";
+static const std::string SPIKE_ID = "spike";
+static const std::string WORKER_ID = "worker";
 
 static const std::string MAIN_MENU_BACKGROUND_ID = "mainmenu";
 static const SDL_Rect BACKGROUND_POSITION = { 0, 0, 1280, 720 };
@@ -61,13 +65,13 @@ static const SDL_Color SOLID_BLACK = { 0, 0, 0, 255 };
 static const SDL_Color YELLOW = { 255, 255, 0, 255 };
 static const SDL_Color CYAN = { 0, 255, 255, 255 };
 
-static const int UPDATE_INTERVAL_MILLIS = 1000;
+static const int UPDATE_INTERVAL_MILLIS = 4000;
+static const int ZOMBIE_INTERVAL_MILLIS = 10000;
 
-static const int SHOOT_INTERVAL_MILLIS = 2000;
+static const int PROJECTILE_SPEED = 6;
+static const int PROJECTILE_SIZE = 30;
 
-static const int PROJECTILE_SPEED = 10;
-static const int PROJECTILE_SIZE = 60;
-static const std::string PROJECTILE_SPRITE_FILEPATH = "assets/pea.bmp";
-static const std::string PROJECTILE_ID = "projectile";
+static const int ZOMBIE_SPEED = 60;
+
 
 #endif // CONSTANTS

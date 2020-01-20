@@ -8,7 +8,10 @@ class Projectile : public GameObject
 {
 public:
 	Projectile(SDL_Rect position);
+	void setType(std::string t);
+	std::string getType();
 private:
+	std::string type;
 };
 
 #endif // !__PROJECTILE_H__
