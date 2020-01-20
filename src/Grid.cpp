@@ -349,6 +349,7 @@ int Grid::checkCollision(Player* player)
 			player->updateHealth(-50);
 			if (player->getHealth() <= 0)
 			{
+				player->setHealth(150);
 				return 2;
 			}
 		}
