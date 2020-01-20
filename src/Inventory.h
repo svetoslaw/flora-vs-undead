@@ -7,6 +7,7 @@
 #include "SnowPea.h"
 #include "Cactus.h"
 #include "Player.h"
+#include "Level.h"
 #include <vector>
 #include <string>
 
@@ -15,8 +16,8 @@ class Inventory
 public:
 	Inventory();
 	void setInventory();
-	void updateInventory(int sun, TextureManager textureManager, SDL_Renderer* renderer);
-	void drawInventory(int sun, TextureManager textureManager, SDL_Renderer* renderer);
+	void updateInventory(int sun, int level, TextureManager textureManager, SDL_Renderer* renderer);
+	void drawInventory(int sun, Level level, TextureManager textureManager, SDL_Renderer* renderer);
 	void handleEvent(SDL_Event* e);
 	void onClick(int s);
 	void setSelected(int sel);

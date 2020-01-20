@@ -32,6 +32,11 @@ void Player::setHealth(int h) {
 	health = h;
 }
 
+void Player::updateHealth(int h)
+{
+	health += h;
+}
+
 int Player::getHealth() {
 	return health;
 }
