@@ -14,7 +14,7 @@ public:
 	int getHealth();
 private:
 	std::string type;
-	int health = 200;
+	int health = 0;
 };
 
 #endif // !__ZOMBIE_H__

@@ -10,6 +10,7 @@
 #include "State.h"
 #include "Grid.h"
 #include "Inventory.h"
+#include "Level.h"
 #include <functional>
 #include <vector>
 #include <string>
@@ -41,6 +42,7 @@ private:
 	State state;
 	Grid grid;
 	Inventory inventory;
+	Level level;
 };
 
 #endif // !__GAME_H__

@@ -13,6 +13,7 @@ public:
 	void updateSunlight(int us);
 	int getSunlight();
 	void setHealth(int h);
+	void updateHealth(int h);
 	int getHealth();
 	void killPlayer();
 	bool getStatus(); //check live or dead status of player.

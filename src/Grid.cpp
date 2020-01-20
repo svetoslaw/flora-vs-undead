@@ -213,13 +213,35 @@ void Grid::moveProjectiles(int projectileSpeed)
 	}
 }
 
-void Grid::spawnZombies()
+void Grid::destroyProjectiles()
+{
+	projectiles.clear();
+}
+
+void Grid::spawnZombies(Level level)
 {
 	int pos = rand() % 340 + 20;
-	SDL_Rect projectileSpawnPosition = { cells.at(9).getPosition().x + 50, cells.at(9).getPosition().y + pos, 121, 200 };
-	Zombie zombie(projectileSpawnPosition);
-	zombie.setType("worker");
-	zombies.push_back(zombie);
+	if (level.getLevel() == 1)
+	{
+		SDL_Rect zombieSpawnPosition = { cells.at(9).getPosition().x, cells.at(9).getPosition().y + pos, 100, 160 };
+		Zombie zombie(zombieSpawnPosition);
+		zombie.setType("worker");
+		zombies.push_back(zombie);
+	}
+	else if (level.getLevel() == 2)
+	{
+		SDL_Rect zombieSpawnPosition = { cells.at(9).getPosition().x, cells.at(9).getPosition().y + pos, 109, 188 };
+		Zombie zombie(zombieSpawnPosition);
+		zombie.setType("cone");
+		zombies.push_back(zombie);
+	}
+	else
+	{
+		SDL_Rect zombieSpawnPosition = { cells.at(9).getPosition().x, cells.at(9).getPosition().y + pos, 109, 188 };
+		Zombie zombie(zombieSpawnPosition);
+		zombie.setType("bucket");
+		zombies.push_back(zombie);
+	}
 	numOfZombies++;
 }
 
@@ -256,7 +278,7 @@ int Grid::getNumberOfZombies()
 	return numOfZombies;
 }
 
-void Grid::checkCollision()
+int Grid::checkCollision(Player* player)
 {
 	for (int i = 0; i < cells.size(); i++)
 	{
@@ -264,9 +286,17 @@ void Grid::checkCollision()
 		{
 			for (int j = 0; j < zombies.size(); j++) 
 			{
-				int distance = sqrt(pow((cells.at(i).getPosition().x - zombies.at(j).getPosition().x), 2) 
-					+ pow((cells.at(i).getPosition().y - zombies.at(j).getPosition().y), 2));
-				if (distance < 100) 
+				int leftA = cells.at(i).getPosition().x;
+				int rightA = cells.at(i).getPosition().x + cells.at(i).getPosition().w;
+				int topA = cells.at(i).getPosition().y;
+				int bottomA = cells.at(i).getPosition().y + cells.at(i).getPosition().h;
+				
+				int leftB = zombies.at(j).getPosition().x;
+				int rightB = zombies.at(j).getPosition().x + zombies.at(j).getPosition().w;
+				int topB = zombies.at(j).getPosition().y;
+				int bottomB = zombies.at(j).getPosition().y + zombies.at(j).getPosition().h;
+
+				if (!(bottomA <= topB) && !(topA >= bottomB) && !(rightA <= leftB) && !(leftA >= rightB))
 				{
 					clearCell(i);
 				}
@@ -278,14 +308,32 @@ void Grid::checkCollision()
 	{
 		for (int t = 0; t < zombies.size(); t++)
 		{
-			int distance2 = sqrt(pow((zombies.at(t).getPosition().x - projectiles.at(k).getPosition().x), 2)
-				+ pow((zombies.at(t).getPosition().y - projectiles.at(k).getPosition().y), 2));
-			if (distance2 < 50)
+			int leftA = zombies.at(t).getPosition().x;
+			int rightA = zombies.at(t).getPosition().x + zombies.at(t).getPosition().w;
+			int topA = zombies.at(t).getPosition().y;
+			int bottomA = zombies.at(t).getPosition().y + zombies.at(t).getPosition().h;
+
+			int leftB = projectiles.at(k).getPosition().x;
+			int rightB = projectiles.at(k).getPosition().x + projectiles.at(k).getPosition().w;
+			int topB = projectiles.at(k).getPosition().y;
+			int bottomB = projectiles.at(k).getPosition().y + projectiles.at(k).getPosition().h;
+
+			if (!(bottomA <= topB) && !(topA >= bottomB) && !(rightA <= leftB) && !(leftA >= rightB))
 			{
-				zombies.at(t).updateHealth(-50);
+				std::string typ = projectiles.at(k).getType();
+				if(typ == "pea") zombies.at(t).updateHealth(-25);
+				else if(typ == "ice") zombies.at(t).updateHealth(-50);
+				else zombies.at(t).updateHealth(-100);
+				
 				if (zombies.at(t).getHealth() <= 0)
 				{
 					destroyZombie(t);
+					defeatedZombies++;
+					if (defeatedZombies == 5)
+					{
+						defeatedZombies = 0;
+						return 1;
+					}
 				}
 				projectiles.erase(projectiles.begin() + k);
 				break;
@@ -298,6 +346,14 @@ void Grid::checkCollision()
 		if (zombies.at(m).getPosition().x <= 40)
 		{
 			destroyZombie(m);
+			player->updateHealth(-50);
+			if (player->getHealth() <= 0)
+			{
+				player->setHealth(150);
+				return 2;
+			}
 		}
 	}
+
+	return 0;
 }

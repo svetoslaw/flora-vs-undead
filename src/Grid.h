@@ -10,6 +10,8 @@
 #include "Projectile.h"
 #include "Zombie.h"
 #include "Constants.cpp"
+#include "Level.h"
+#include "Player.h"
 #include <vector>
 #include <iostream>
 #include <stdlib.h>
@@ -25,13 +27,14 @@ public:
 	void clearGrid();
 	void clearCell(int k);
 	void handleEvent(SDL_Event* e, std::string selected, Player* player, TextureManager textureManager, SDL_Renderer* renderer);
-	void checkCollision();
+	int checkCollision(Player* player);
 
 	void spawnProjectiles();
 	void drawProjectiles(TextureManager textureManager, SDL_Renderer* renderer);
 	void moveProjectiles(int projectileSpeed);
+	void destroyProjectiles();
 
-	void spawnZombies();
+	void spawnZombies(Level level);
 	void drawZombies(TextureManager textureManager, SDL_Renderer* renderer);
 	void moveZombies(int zombieSpeed);
 	void destroyZombies();
@@ -47,6 +50,7 @@ private:
 	SnowPea snowpea;
 	Cactus cactus;
 	int numOfZombies = 0;
+	int defeatedZombies = 0;
 };
 
 #endif // !__GRID_H__

@@ -20,30 +20,30 @@ void Inventory::setInventory()
 	}
 }
 
-void Inventory::updateInventory(int sun, TextureManager textureManager, SDL_Renderer* renderer)
+void Inventory::updateInventory(int sun, int level, TextureManager textureManager, SDL_Renderer* renderer)
 {
 	if (sun >= peashooter.getPrice())
 	{
 		textureManager.draw("peashooter", renderer, &peashooter.getInventoryPosition());
 	}
-	if (sun >= snowpea.getPrice())
+	if (sun >= snowpea.getPrice() && level >= 2)
 	{
 		textureManager.draw("snowpea", renderer, &snowpea.getInventoryPosition());
 	}
-	if (sun >= cactus.getPrice())
+	if (sun >= cactus.getPrice() && level >= 3)
 	{
 		textureManager.draw("cactus", renderer, &cactus.getInventoryPosition());
 	}
 }
 
-void Inventory::drawInventory(int sun, TextureManager textureManager, SDL_Renderer* renderer)
+void Inventory::drawInventory(int sun, Level level, TextureManager textureManager, SDL_Renderer* renderer)
 {
 	for (int j = 0; j < cells.size(); j++)
 	{
 		cells.at(j).drawCell(textureManager, renderer);
 	}
 
-	updateInventory(sun, textureManager, renderer);
+	updateInventory(sun, level.getLevel(), textureManager, renderer);
 }
 
 void Inventory::handleEvent(SDL_Event* e)

@@ -6,7 +6,7 @@ Cactus::Cactus()
 	health = 5;
 	shootingDamage = 3;
 	shootingRange = 10;
-	price = 90;
+	price = 50;
 }
 
 SDL_Rect Cactus::getInventoryPosition()

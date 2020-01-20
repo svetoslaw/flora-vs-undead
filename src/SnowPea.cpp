@@ -6,7 +6,7 @@ SnowPea::SnowPea()
 	health = 5;
 	shootingDamage = 3;
 	shootingRange = 10;
-	price = 60;
+	price = 40;
 }
 
 SDL_Rect SnowPea::getInventoryPosition()
